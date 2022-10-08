@@ -91,73 +91,17 @@ static void ReadKeys()
 
 static void ProcessFiles()
 {
-    //var files = Enumerable.Range(1, 100).Select(n => "File" + n + ".txt");
+    var files = Enumerable.Range(1, 100).Select(n => "File" + n + ".txt");
 
-    //var taskBusy = new Task(BusyIndicator);
-    //taskBusy.Start();
+    var taskBusy = new Task(BusyIndicator);
+    taskBusy.Start();
 
-    //foreach (var file in files)
-    //{
-    //    Thread.Sleep(1000);
-    //    Console.WriteLine("Procesing file {0}", file);
-    //}
-    string input;
-    StringBuilder sb = new();
-
-    do
+    foreach (var file in files)
     {
-        Console.Write("Enter rfid card fob: ");
-        input = Console.ReadLine();
+        Thread.Sleep(1000);
+        Console.WriteLine("Procesing file {0}", file);
+    }
 
-        if (Console.ReadKey(true).Key == ConsoleKey.Escape)
-        {
-            Environment.Exit(0);
-        }
-
-        if (input == "EXIT")
-        {
-            Environment.Exit(0);
-        }
-
-        try
-        {
-            //System.Globalization.NumberStyles.HexNumber
-            int decValue = int.Parse(input, System.Globalization.NumberStyles.Number);
-            string hexValue = string.Format("{0:X}", decValue);
-
-            sb.AppendLine($"DEC: {decValue}");
-
-            if (hexValue.Length < readLength)
-            {
-                hexValue = hexValue.Insert(0, new string('0', readLength - hexValue.Length));
-            }
-
-            sb.AppendLine($"Full code HEX: {hexValue}");
-
-            int value = Convert.ToInt32(hexValue.Substring(startIndexSubstring, substringLength), formBaseToInt32);
-
-            //Console.WriteLine($"Full code DEC: {value:D10}");
-            sb.AppendLine($"DEC 24 bit: {value}");
-
-            using (StreamWriter writer = new(fileName, append: true))
-            {
-                writer.WriteLineAsync(sb);
-                writer.Close();
-            }
-
-        }
-        catch (Exception)
-        {
-            Console.WriteLine("Enter again!");
-        }
-
-        Console.WriteLine(sb);
-        sb.Clear();
-
-        Console.WriteLine($"To Quit Enter: EXIT or pres Escape \r\n");
-
-
-    } while (true);
 }
 
 static void BusyIndicator()
